@@ -3,9 +3,9 @@ let maskImg = null;
 let renderCounter = 0;
 
 // change these three lines as appropiate
-let sourceFile = "input_2.jpg";
-let maskFile = "mask_2.png";
-let outputFile = "output_2.png";
+let sourceFile = "input_3.jpg";
+let maskFile = "mask_3.png";
+let outputFile = "output_3.png";
 
 function preload() {
   sourceImg = loadImage(sourceFile);
@@ -13,7 +13,7 @@ function preload() {
 }
 
 function setup() {
-  let main_canvas = createCanvas(1920, 640);
+  let main_canvas = createCanvas(1920, 1920);
   main_canvas.parent('canvasContainer');
 
   imageMode(CENTER);
@@ -41,33 +41,33 @@ function draw() {
 
     // Defines the centre of the image
     let xcentre = 960
-    let ycentre = 320
+    let ycentre = 960
 
     // Determines the strength of parallax
     let paraStrength = 5
 
     // Draws a given 'square' of the grid, each vertices position is drawn in relation to its red value. The lesser value of red, and the further away from the centre of the image, the greater the strength of parallax.
     beginShape()
-    pix = sourceImg.get(x, y)
+    pix = sourceImg.get(x, y - 640)
     vertex(x + (xcentre - x) / (pix[0] / paraStrength), y + (ycentre - y) / (pix[0] / paraStrength))
-    pix = sourceImg.get(x + gridsize, y)
+    pix = sourceImg.get(x + gridsize, y - 640)
     vertex(x + gridsize + (xcentre - (x - gridsize)) / (pix[0] / paraStrength), y + (ycentre - y) / (pix[0] / paraStrength))
-    pix = sourceImg.get(x + gridsize, y + gridsize)
+    pix = sourceImg.get(x + gridsize, y + gridsize - 640)
     vertex(x + gridsize + (xcentre - (x - gridsize)) / (pix[0] / paraStrength), y + gridsize + (ycentre - (y + gridsize)) / (pix[0] / paraStrength))
-    pix = sourceImg.get(x, y + gridsize)
+    pix = sourceImg.get(x, y + gridsize - 640)
     vertex(x + (xcentre - x) / (pix[0] / paraStrength), y + gridsize + (ycentre - (y + gridsize)) / (pix[0] / paraStrength))
     endShape(CLOSE)
   }
 
   // Draws the pixel in the grid
-  for (var y = 0; y < sourceImg.height; y = y + gridsize) {
+  for (var y = 640; y < sourceImg.height + 640; y = y + gridsize) {
     for (var x = 0; x < sourceImg.width; x = x + gridsize) {
 
       // Defines the colour of a given pixel of the input image
-      let pix = sourceImg.get(x, y)
+      let pix = sourceImg.get(x, y - 640)
 
       // Defines the colour of a given pixel of the mask image
-      let mask = maskImg.get(x, y);
+      let mask = maskImg.get(x, y - 640);
 
       // If the mask is black...
       if (mask[0] == 0) {
@@ -85,7 +85,7 @@ function draw() {
         fill(pix)
 
         // Draws the ellipse at each vertice of the pixel
-        ellipse(x + (960 - x) / (pix[0] / 5), y + (320 - y) / (pix[0] / 5), circsize, circsize)
+        ellipse(x + (960 - x) / (pix[0] / 5), y + (960 - y) / (pix[0] / 5), circsize, circsize)
 
         // If the mask is not black...
       } else {
@@ -103,7 +103,7 @@ function draw() {
         fill(0)
 
         // Draws the ellipse at each vertice of the pixel
-        ellipse(x + (960 - x) / (pix[0] / 5), y + (320 - y) / (pix[0] / 5), circsize, circsize)
+        ellipse(x + (960 - x) / (pix[0] / 5), y + (960 - y) / (pix[0] / 5), circsize, circsize)
       }
     }
   }
